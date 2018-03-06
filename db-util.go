@@ -7,7 +7,6 @@ import (
 
 const DB_FILE = "/home/kuba/go/src/simple-api/gorm.db"
 const DB_ENGINE = "sqlite3"
-var db *gorm.DB
 
 func getAllPeopleFromDb() ([]Person, error) {
 	var people []Person

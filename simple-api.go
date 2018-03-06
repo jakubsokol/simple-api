@@ -17,7 +17,6 @@ func main() {
 	r.GET("/people", getPeople)
 	r.GET("/people/:id", getPersonById)
 	r.POST("/people", createPerson)
-
 	r.Run(":8181")
 }
 
@@ -53,7 +52,6 @@ func createPerson(context *gin.Context) {
 		fmt.Println(err)
 		context.AbortWithStatus(404)
 	}
-
 }
 
 
