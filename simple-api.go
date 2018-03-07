@@ -17,6 +17,7 @@ func main() {
 	r.GET("/people", getPeople)
 	r.GET("/people/:id", getPersonById)
 	r.POST("/people", createPerson)
+	r.DELETE("people/:id", deletePerson)
 	r.Run(":8181")
 }
 
@@ -48,6 +49,17 @@ func createPerson(context *gin.Context) {
 	err := addPersonToDb(person)
 	if err == nil {
 		context.JSON(200, person)
+	} else {
+		fmt.Println(err)
+		context.AbortWithStatus(404)
+	}
+}
+
+func deletePerson(context *gin.Context) {
+	id := context.Params.ByName("id")
+	err := deletePersonFromDb(id)
+	if err == nil {
+		context.JSON(200, gin.H{"id #" + id: "deleted"})
 	} else {
 		fmt.Println(err)
 		context.AbortWithStatus(404)

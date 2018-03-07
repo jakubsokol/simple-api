@@ -10,41 +10,55 @@ const DB_ENGINE = "sqlite3"
 
 func getAllPeopleFromDb() ([]Person, error) {
 	var people []Person
+	var err error
 	db, err := gorm.Open(DB_ENGINE, DB_FILE)
 	db.AutoMigrate(&Person{})
 	defer db.Close()
 	if err == nil {
-		err := db.Find(&people).Error
-		return people, err
+		err = db.Find(&people).Error
 	} else {
 		fmt.Println("Error while connect to DB", err)
-		return nil, err
 	}
+	return people, err
 }
 
 func getPersonByIdFromDb(id string) (Person, error) {
 	var person Person
+	var err error
 	db, err := gorm.Open(DB_ENGINE, DB_FILE)
 	db.AutoMigrate(&Person{})
 	defer db.Close()
 	if err == nil {
-		err := db.Where("id = ?", id).First(&person).Error
-		return person, err
+		err = db.Where("id = ?", id).First(&person).Error
 	} else {
 		fmt.Println("Error while connect to DB", err)
-		return person, err
 	}
+	return person, err
 }
 
-func addPersonToDb(person Person) error{
+func addPersonToDb(person Person) error {
+	var err error
 	db, err := gorm.Open(DB_ENGINE, DB_FILE)
 	db.AutoMigrate(&Person{})
 	defer db.Close()
 	if err == nil {
 		db.Create(&person)
-		return err
 	} else {
 		fmt.Println("Error while connect to DB", err)
-		return err
 	}
+	return err
+}
+
+func deletePersonFromDb(id string) error {
+	var person Person
+	var err error
+	db, err := gorm.Open(DB_ENGINE, DB_FILE)
+	db.AutoMigrate(&Person{})
+	defer db.Close()
+	if err == nil {
+		err = db.Where("id = ?", id).Delete(&person).Error
+	} else {
+		fmt.Println("Error while connect to DB", err)
+	}
+	return err
 }
